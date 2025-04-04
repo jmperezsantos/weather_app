@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/components/PlecaDetail.dart';
 import 'package:weather_app/model/PlaceModel.dart';
 import 'package:weather_app/model/PlaceWeatherModel.dart';
 import 'package:weather_app/webservice/WeatherWebServiceClient.dart';
@@ -34,80 +35,58 @@ class _WeatherDetailScreenState extends State<WeatherDetailScreen> {
       body: _weather == null
           ? const Center(child: CircularProgressIndicator())
           : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  color: Colors.blue[100],
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            color: Colors.blue[100],
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            child: PlecaDetail(weather: _weather!),
+          ),
+          const Padding(
+            padding: EdgeInsets.all(8),
+            child: Text('Pronóstico por hora',
+                style: TextStyle(fontSize: 18)),
+          ),
+          Expanded(
+            child: GridView.builder(
+              padding: const EdgeInsets.all(8),
+              gridDelegate:
+              const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+              ),
+              itemCount: _weather!.hourly.data.length,
+              itemBuilder: (context, index) {
+                final hourly = _weather!.hourly.data[index];
+                return Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.blue[50],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _weather!.current.summary,
-                            style: const TextStyle(fontSize: 24),
-                          ),
-                          Text(
-                            '${_weather!.current.temperature}°C',
-                            style: const TextStyle(
-                                fontSize: 32, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
                       Image(
                         image: AssetImage(
-                            "assets/weather_icons/${_weather!.current.iconNum}.png"),
-                      )
+                            "assets/weather_icons/${hourly.icon}.png"),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(hourly.date.substring(11, 16)),
+                          Text('${hourly.temperature}°C'),
+                        ],
+                      ),
                     ],
                   ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Text('Pronóstico por hora',
-                      style: TextStyle(fontSize: 18)),
-                ),
-                Expanded(
-                  child: GridView.builder(
-                    padding: const EdgeInsets.all(8),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 8,
-                      crossAxisSpacing: 8,
-                    ),
-                    itemCount: _weather!.hourly.data.length,
-                    itemBuilder: (context, index) {
-                      final hourly = _weather!.hourly.data[index];
-                      return Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.blue[50],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Column(
-                          children: [
-                            Image(
-                              image: AssetImage(
-                                  "assets/weather_icons/${hourly.icon}.png"),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(hourly.date.substring(11, 16)),
-                                Text('${hourly.temperature}°C'),
-                              ],
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
+                );
+              },
             ),
+          ),
+        ],
+      ),
     );
   }
 }

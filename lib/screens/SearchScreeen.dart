@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/components/PlacesComponent.dart';
 import 'package:weather_app/model/PlaceModel.dart';
 import 'package:weather_app/screens/WeatherDetailScreen.dart';
 import 'package:weather_app/webservice/WeatherWebServiceClient.dart';
@@ -49,7 +50,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 itemBuilder: (context, index) {
                   final place = _results[index];
                   return ListTile(
-                    title: Text('${place.name}, ${place.country}'),
+                    title: PlacesComponent(city: place.name, country: place.country),
                     onTap: () {
                       Navigator.push(
                         context,

@@ -11,13 +11,13 @@ String placeModelToJson(PlaceModel data) => json.encode(data.toJson());
 class PlaceModel {
   String name;
   String placeId;
-  String admArea1;
-  String admArea2;
+  String? admArea1;
+  String? admArea2;
   String country;
-  String lat;
-  String lon;
-  String timezone;
-  String type;
+  String? lat;
+  String? lon;
+  String? timezone;
+  String? type;
 
   PlaceModel({
     required this.name,
