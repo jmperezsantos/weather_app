@@ -9,11 +9,11 @@ class WeatherWebServiceClient {
   final String baseUrl = 'https://www.meteosource.com/api/v1/free';
 
   Future<List<PlaceModel>> searchPlaces(String prefix) async {
-    final response = await http.get(Uri.parse(
-        '$baseUrl/find_places_prefix?text=$prefix&key=$apiKey'));
+    final response = await http
+        .get(Uri.parse('$baseUrl/find_places_prefix?text=$prefix&key=$apiKey'));
 
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body) as List;
+      final data = jsonDecode(utf8.decode(response.bodyBytes)) as List;
       return data.map((e) => PlaceModel.fromJson(e)).toList();
     } else {
       throw Exception('Error buscando lugares');
@@ -25,7 +25,8 @@ class WeatherWebServiceClient {
         '$baseUrl/point?place_id=$placeId&sections=current,hourly&timezone=auto&key=$apiKey'));
 
     if (response.statusCode == 200) {
-      return PlaceWeatherModel.fromJson(jsonDecode(response.body));
+      return PlaceWeatherModel.fromJson(
+          jsonDecode(utf8.decode(response.bodyBytes)));
     } else {
       throw Exception('Error obteniendo el clima');
     }

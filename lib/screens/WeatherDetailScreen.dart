@@ -40,18 +40,27 @@ class _WeatherDetailScreenState extends State<WeatherDetailScreen> {
                   color: Colors.blue[100],
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
                     children: [
-                      Text(
-                        _weather!.current.summary,
-                        style: const TextStyle(fontSize: 24),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _weather!.current.summary,
+                            style: const TextStyle(fontSize: 24),
+                          ),
+                          Text(
+                            '${_weather!.current.temperature}°C',
+                            style: const TextStyle(
+                                fontSize: 32, fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
-                      Text(
-                        '${_weather!.current.temperature}°C',
-                        style: const TextStyle(
-                            fontSize: 32, fontWeight: FontWeight.bold),
-                      ),
+                      const Spacer(),
+                      Image(
+                        image: AssetImage(
+                            "assets/weather_icons/${_weather!.current.iconNum}.png"),
+                      )
                     ],
                   ),
                 ),
@@ -68,22 +77,29 @@ class _WeatherDetailScreenState extends State<WeatherDetailScreen> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 8,
                       crossAxisSpacing: 8,
-                      childAspectRatio: 2.5,
                     ),
                     itemCount: _weather!.hourly.data.length,
                     itemBuilder: (context, index) {
-                      final h = _weather!.hourly.data[index];
+                      final hourly = _weather!.hourly.data[index];
                       return Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: Colors.blue[50],
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
                           children: [
-                            Text(h.date.substring(11, 16)),
-                            Text('${h.temperature}°C'),
+                            Image(
+                              image: AssetImage(
+                                  "assets/weather_icons/${hourly.icon}.png"),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(hourly.date.substring(11, 16)),
+                                Text('${hourly.temperature}°C'),
+                              ],
+                            ),
                           ],
                         ),
                       );
